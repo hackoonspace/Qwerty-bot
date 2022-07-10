@@ -1,5 +1,7 @@
 # Bot do Qwerty
 
+[!Imagem do Qwerty](https://github.com/hackoonspace/Qwerty-bot/blob/main/qwerty.png))
+
 Bot para gerir e ofercer diversos sistemas e ferramentas para o servidor do Discord do HackoonSpace. 
 
 Baseado no mascote da própria entidade, o guaxinim Qwerty.
