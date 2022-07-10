@@ -1,0 +1,40 @@
+{
+	"calendarChannel": "969684457693003846",
+	"clientID": "772316276818575400",
+	"embedColor": "#1411d4",
+	"logChannel": "985611902241624145",
+	"mainGuild": "492748426270998529",
+	"moderationGuild": "885018319936163941",
+	"moderationChannel" : "985611902241624145",
+	"newUserChannel": "893304927185678408",
+	"roleGivingChannel": "813873465442435073",
+	"roleGivingMessage": "899849455665299477",
+	"reactRoles": [
+		{
+			"reaction": "🎮",
+			"role": "704532330374627359"
+		},
+		{
+			"reaction": "📽️",
+			"role": "775193373086449676"
+		},
+		{
+			"reaction": "🎫",
+			"role": "813878116895948830"
+		},
+		{
+			"reaction": "⛏️",
+			"role": "714306244474568704"
+		},
+		{
+			"reaction": "🤑",
+			"role": "899846862343925810"
+		},
+		{
+			"reaction": "📖",
+			"role": "985602009958850622"
+		}
+	],
+	"welcomeChannel": "707361178833256508",
+	"welcomeRole": "638507600992010250"
+}
