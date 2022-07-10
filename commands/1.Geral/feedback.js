@@ -16,7 +16,6 @@ module.exports = {
     dm: true,
 	cooldown: 60,
 	execute(bot, inter, args) {
-
         if(!args[0])
             return inter.reply({ content: 'É necessário enviar um feedback válido', ephemeral: true });
 
@@ -30,7 +29,7 @@ module.exports = {
             .setTimestamp();
 
             channel.send({embeds: [embed]});
-            inter.reply('Mensagem enviada. Obrigada pelo seu feedback!');
+            inter.reply({ content: 'Mensagem enviada. Obrigada pelo seu feedback!', ephemeral: true });
         }).catch( e => {
             console.log(e);
             inter.reply({ content: 'Alguma coisa deu errado! Tente novamente mais tarde', ephemeral: true });

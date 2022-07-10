@@ -4,12 +4,8 @@ require('dotenv').config();
 
 const { readdirSync } = require('fs');
 const Discord = require('discord.js');
-const { 
-    mainGuild, 
-    reactRoles, 
-    roleGivingMessage, 
-    welcomeChannel  
-} = require('./config.json');
+const { mainGuild, reactRoles, roleGivingMessage, welcomeChannel } = require('./config.json');
+const notification = require('./system/notification.js');
 const errorHandler = require('./system/errorHandler.js');
 
 const Intents = Discord.Intents.FLAGS;
@@ -48,6 +44,13 @@ for(const dir of commandDirectories){
 bot.once('ready', async () => {
 	bot.user.setActivity('CTF', { type: 'COMPETING' });
 
+    try {
+        notification.meetingNotifications(bot);
+        notification.eventNotifications(bot);
+    } catch (error) {
+        errorHandler.logGenericError(bot, error);
+    }
+
 	console.log('Bot do Qwerty online');
 });
 
@@ -67,14 +70,14 @@ bot.on('guildMemberAdd', async member => {
 
     if(channel)
 	    channel.send(`Olá <@${member.id}>. Sou o Qwerty e te dou boas-vindas ao **HackoonSpace**!\n\nSe tiver alguma dúvida, não tenha medo de perguntar. Só hackeamos os outros nas horas vagas...\n\nPara ter acesso ao resto do servidor, preciso que você use o comando \`/validar\` e envie um texto dizendo o porquê você entrou aqui (ex: "Sou da turma X de Y da UFSCar e me interessei em conhecer o HackoonSpace..."). É para evitar a entrada de bots e pessoas mal-intencionadas\n\nQualquer problema, só chamar a equipe aqui do Hackoon!`)
-            .catch(e => console.log(e));
+            .catch(error => errorHandler.logGenericError(bot, error));
 });
 
 bot.on('guildMemberRemove', member => {
     const channel = member.guild.channels.cache.get(welcomeChannel);
 
     if(channel)
-        channel.send("<@" + member.id + ">, fez overclocking e queimou o PC. Até mais!").catch(e => console.log(e));
+        channel.send("<@" + member.id + ">, fez overclocking e queimou o PC. Até mais!").catch(error => errorHandler.logGenericError(bot, error));
 })
 
 bot.on('messageReactionAdd', async (reaction, user) => {
@@ -98,7 +101,6 @@ bot.on('messageReactionRemove', async (reaction, user) => {
 })
 
 bot.on('interactionCreate', async inter => {
-
     if(inter.isModalSubmit()) {
         try {
             const commandName = inter.customId.substring(0, inter.customId.indexOf("|"));
@@ -109,6 +111,7 @@ bot.on('interactionCreate', async inter => {
             return command.modalCollector(bot, inter);
         } catch (error) {
             errorHandler.logInteractionError(bot, inter, error);
+            return inter.reply({ content: 'Ocorreu algum problema ao usar o comando!', ephemeral: true });
         }
     }
 

@@ -3,9 +3,10 @@ const { Collection } = require('discord.js');
 const { Routes } = require('discord-api-types/v9');
 const { clientID, mainGuild, moderationGuild } = require('../config.json');
 const { readdirSync } = require('fs');
+const { logGenericError } = require('./errorHandler.js');
 
 module.exports = {
-    execute: async function(bot) {
+    execute: async bot => {
         const interactions = [];
         const moderationInteractions = [];
         bot.interactions = new Collection();
@@ -50,7 +51,7 @@ module.exports = {
 
             console.log('Slash commands atualizados com sucesso');
         } catch (error) {
-            console.error(error);
+            logGenericError(bot, error);
         }   
     }
 }
