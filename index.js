@@ -20,10 +20,13 @@ const bot = new Discord.Client({
         Intents.GUILD_MESSAGES,
         Intents.GUILD_MESSAGE_REACTIONS,
         Intents.DIRECT_MESSAGES,
-        Intents.DIRECT_MESSAGE_REACTIONS
+        Intents.DIRECT_MESSAGE_REACTIONS,
+        Intents.GUILD_SCHEDULED_EVENTS
     ],
     partials: [
         'CHANNEL',
+        'MESSAGE',
+        'REACTION'
     ]
 });
 
@@ -92,7 +95,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 
 bot.on('messageReactionRemove', async (reaction, user) => {
     if (reaction.message.id === roleGivingMessage) {
-        const newRole = roleReactions.find(newRole => newRole.reaction == reaction.emoji.name);
+        const newRole = reactRoles.find(newRole => newRole.reaction == reaction.emoji.name);
         if(newRole){
             const guildMember = reaction.message.guild.members.cache.get(user.id);
             guildMember.roles.remove(newRole.role);
