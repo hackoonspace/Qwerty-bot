@@ -1,6 +1,8 @@
 # Bot do Qwerty
 
-[!Imagem do Qwerty](https://github.com/hackoonspace/Qwerty-bot/blob/main/qwerty.png))
+<center>
+<img src="https://github.com/hackoonspace/Qwerty-bot/blob/main/images/qwerty.png" width="100" height="100">
+</center>
 
 Bot para gerir e ofercer diversos sistemas e ferramentas para o servidor do Discord do HackoonSpace. 
 
