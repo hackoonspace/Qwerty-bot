@@ -8,6 +8,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('sudocargos')
         .setDescription('Reenvie a mensagem de reações por cargos'),
+    admin: true,
     cooldown: 30,
     async execute(bot, inter, args) {
         const channel = bot.channels.cache.get(roleGivingChannel);
