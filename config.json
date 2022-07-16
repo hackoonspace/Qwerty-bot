@@ -13,27 +13,33 @@
 	"reactRoles": [
 		{
 			"reaction": "🎮",
-			"role": "704532330374627359"
+			"role": "704532330374627359",
+			"description": "Para quem quer ser avisado de jogatinas no servidor"
 		},
 		{
 			"reaction": "📽️",
-			"role": "775193373086449676"
+			"role": "775193373086449676",
+			"description": "Para quem quer participar dos nossos cineminhas"
 		},
 		{
 			"reaction": "🎫",
-			"role": "813878116895948830"
+			"role": "813878116895948830",
+			"description": "Para ser notificado de eventos (do servidor ou não)"
 		},
 		{
 			"reaction": "⛏️",
-			"role": "714306244474568704"
+			"role": "714306244474568704",
+			"description": "Para quem quer ser avisado sobre nosso servidor de Minecraft"
 		},
 		{
 			"reaction": "🤑",
-			"role": "899846862343925810"
+			"role": "899846862343925810",
+			"description": "Para quem quer ser avisado dos próximos sorteios de brindes"
 		},
 		{
 			"reaction": "📖",
-			"role": "985602009958850622"
+			"role": "985602009958850622",
+			"description": "Para quem quer ser marcado em coisas sobre conteúdos, aulas, treinamentos e afins"
 		}
 	],
 	"welcomeChannel": "707361178833256508",
