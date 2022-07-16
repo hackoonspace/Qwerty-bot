@@ -20,7 +20,7 @@ module.exports = {
 
             let description = '';
             reactRoles.forEach(role => {
-                description += `${role.reaction} - <@&${role.role}>\n`;
+                description += `${role.reaction} - <@&${role.role}>: ${role.description}\n`;
             });
 
             embed.setDescription(description);
