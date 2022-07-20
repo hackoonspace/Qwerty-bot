@@ -7,7 +7,7 @@ const { embedColor, moderationChannel } = require('../../config.json');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('feedback')
-        .setDescription('Dê sua opinião e ganhe um chicletão!')
+        .setDescription('Dê sua opinião sobre a nossa comunidade')
         .addStringOption(option => option.setName('texto')
             .setDescription('Opinião a ser enviada para a equipe do HackoonSpace')
             .setRequired(true)
