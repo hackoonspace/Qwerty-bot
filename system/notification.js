@@ -93,7 +93,7 @@ async function eventNotifications (bot) {
             const hour = eventDate.getHours();
             const minute = eventDate.getMinutes();
 
-            console.log(`Evento marcado: ${event.name} ->> ${hour}:${minute}`); 
+            console.log(`Evento marcado: ${event.name} ->> ${hour}:${minute} do dia ${day}/${month}`); 
 
             //evento 8 da manhã
             schedule.scheduleJob(`00 08 ${day} ${month} *`, async () => {
