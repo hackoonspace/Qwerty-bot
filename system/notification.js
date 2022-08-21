@@ -98,6 +98,8 @@ async function eventNotifications (bot) {
             //evento 8 da manhã
             schedule.scheduleJob(`00 08 ${day} ${month} *`, async () => {
                 const subscribers = await event.fetchSubscribers();
+                console.log('Começando a enviar notificações às 8h');
+                console.log(subscribers);
                 subscribers.forEach(subscriber => {
                     if(subscriber.user.bot) return;
                     try {
@@ -112,6 +114,8 @@ async function eventNotifications (bot) {
             // evento 15 min antes
             schedule.scheduleJob(`${getEventNotificationHour(minute, hour)} ${day} ${month}  *`, async () => {
                 const subscribers = await event.fetchSubscribers();
+                console.log('Começando a enviar notificações 15 min antes');
+                console.log(subscribers);
                 subscribers.forEach(subscriber => {
                     if(subscriber.user.bot) return;
                     try {
