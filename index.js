@@ -77,7 +77,7 @@ bot.on('guildMemberAdd', async member => {
 });
 
 bot.on('guildMemberRemove', member => {
-    const channel = member.guild.channels.cache.get(logChannel);
+    const channel = bot.channels.cache.get(logChannel);
 
     if(channel)
         channel.send(`<@${member.id}> - ${member.user.username} saiu do servidor do HackoonSpace`).catch(error => errorHandler.logGenericError(bot, error));
