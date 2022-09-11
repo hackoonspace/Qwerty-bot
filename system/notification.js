@@ -111,8 +111,9 @@ async function eventNotifications (bot) {
             });
 
             console.log(getEventNotificationHour(minute, hour))
-            console.log(day)
-            console.log(month)
+            console.log(minute)
+            console.log(hour)
+            console.log(event.scheduledStartTimestamp)
             // evento 15 min antes
             schedule.scheduleJob(`${getEventNotificationHour(minute, hour)} ${day} ${month}  *`, async () => {
                 const subscribers = await event.fetchSubscribers();
