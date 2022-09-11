@@ -109,7 +109,7 @@ async function eventNotifications (bot) {
                     }
                 });
             });
-            console.log(getEventNotificationHour(minute, hour))
+
             // evento 15 min antes
             schedule.scheduleJob(`${getEventNotificationHour(minute, hour)} ${day} ${month}  *`, async () => {
                 const subscribers = await event.fetchSubscribers();
