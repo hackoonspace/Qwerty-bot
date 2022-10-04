@@ -35,11 +35,11 @@ require('./system/commandRegister.js').execute(bot);
 bot.commands = new Discord.Collection();
 
 const commandDirectories = readdirSync(`./commands/`);
-for(const dir of commandDirectories){
+for (const dir of commandDirectories){
     const commandFiles = readdirSync(`./commands/${dir}`).filter(file => file.endsWith('.js') || file.endsWith('.ts'));
     for (const file of commandFiles) {
         const command = require(`./commands/${dir}/${file}`);
-        if(command.data)
+        if (command.data)
             bot.commands.set(command.data.name, command);
     }
 }
@@ -74,6 +74,8 @@ bot.on('guildMemberAdd', async member => {
     if(channel)
 	    channel.send(`Olá <@${member.id}>. Sou o Qwerty e te dou boas-vindas ao **HackoonSpace**!\n\nSe tiver dúvidas, não tenha medo de perguntar. Só hackeamos os outros nas horas vagas...\n\nPara ter acesso ao resto do servidor, preciso que você use o comando \`/validar\` e envie um texto dizendo o porquê você entrou aqui (ex: "Sou da turma X de Y da UFSCar e me interessei em conhecer o HackoonSpace..."). É para evitar a entrada de bots e pessoas mal-intencionadas\n\nQualquer problema, só chamar a equipe aqui do Hackoon!`)
             .catch(error => errorHandler.logGenericError(bot, error));
+    else
+        console.log('Não foi possível encontrar canal de boas-vindas');
 });
 
 bot.on('guildMemberRemove', member => {
@@ -81,12 +83,14 @@ bot.on('guildMemberRemove', member => {
 
     if(channel)
         channel.send(`<@${member.id}> - ${member.user.username} saiu do servidor do HackoonSpace`).catch(error => errorHandler.logGenericError(bot, error));
+    else
+        console.log('Não foi possível encontrar canal de log');
 })
 
 bot.on('messageReactionAdd', async (reaction, user) => {
     if (reaction.message.id === roleGivingMessage) {
         const newRole = reactRoles.find(newRole => newRole.reaction == reaction.emoji.name);
-        if(newRole){
+        if (newRole) {
             const guildMember = reaction.message.guild.members.cache.get(user.id);
             guildMember.roles.add(newRole.role);
         }
@@ -96,7 +100,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
 bot.on('messageReactionRemove', async (reaction, user) => {
     if (reaction.message.id === roleGivingMessage) {
         const newRole = reactRoles.find(newRole => newRole.reaction == reaction.emoji.name);
-        if(newRole){
+        if (newRole) {
             const guildMember = reaction.message.guild.members.cache.get(user.id);
             guildMember.roles.remove(newRole.role);
         }
@@ -104,7 +108,7 @@ bot.on('messageReactionRemove', async (reaction, user) => {
 })
 
 bot.on('interactionCreate', async inter => {
-    if(inter.isModalSubmit()) {
+    if (inter.isModalSubmit()) {
         try {
             const commandName = inter.customId.substring(0, inter.customId.indexOf("|"));
             const command = bot.interactions.get(commandName) || bot.commands.get(commandName);

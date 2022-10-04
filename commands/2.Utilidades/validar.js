@@ -15,7 +15,7 @@ async function modalCollector(bot, inter) {
         return inter.reply({ content: "O texto com a motivação não pode estar vazio", ephemeral: true });
 
     return bot.channels.fetch(newUserChannel).then(channel => {
-        channel.send(`**Novo membro a ser adicionado:** Usuário => <@${inter.user.id}>\n${reasonMessage}`);
+        channel.send(`<@&${process.env.ADMIN_DISCORD_ID}> - **Novo membro a ser adicionado:** Usuário => <@${inter.user.id}>\n${reasonMessage}`);
         inter.reply({ content: "Mensagem enviada. Logo logo vamos dar uma olhada e te liberar no servidor!", ephemeral: true });
     }).catch(e => {
         console.log(e);
