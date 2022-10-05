@@ -6,7 +6,7 @@ const { readdirSync } = require('fs');
 const Discord = require('discord.js');
 const { Player } = require("discord-music-player");
 
-const { logChannel, mainGuild, reactRoles, roleGivingMessage, welcomeChannel } = require('./config.json');
+const { embedColor, logChannel, mainGuild, reactRoles, roleGivingMessage, welcomeChannel } = require('./config.json');
 const notification = require('./system/notification.js');
 const errorHandler = require('./system/errorHandler.js');
 
@@ -34,9 +34,24 @@ const bot = new Discord.Client({
 
 const player = new Player(bot, {
     leaveOnEmpty: false,
+    leaveOnEnd: false,
+    leaveOnStop: false,
 });
 
 bot.player = player;
+
+bot.player.on('songChanged', (queue, newSong, oldSong) => {
+    const channel = bot.channels.cache.find(channel => channel.id === queue.data.channelId);
+
+    if (channel) {
+        const embed = new Discord.MessageEmbed()
+            .setColor(embedColor)
+            .setTitle('Tocando agora')
+            .setDescription(`[${newSong.name}](${newSong.url}) - por **${newSong.author}**`);
+
+        channel.send({ embeds: [embed] });
+    }
+});
 
 require('./system/commandRegister.js').execute(bot);
 
@@ -66,12 +81,12 @@ bot.once('ready', async () => {
 });
 
 bot.on('guildMemberAdd', async member => {
-    if(member.guild.id !== mainGuild) return;
+    if (member.guild.id !== mainGuild) return;
 
-    if(member.user.bot) { 
+    if (member.user.bot) { 
         const botRole = member.guild.roles.cache.find(role => role.name === "Bots");
 
-        if(botRole)
+        if (botRole)
             member.roles.add(botRole);
         
         return;
@@ -79,7 +94,7 @@ bot.on('guildMemberAdd', async member => {
         
     const channel = member.guild.channels.cache.get(welcomeChannel);
 
-    if(channel)
+    if (channel)
 	    channel.send(`Olá <@${member.id}>. Sou o Qwerty e te dou boas-vindas ao **HackoonSpace**!\n\nSe tiver dúvidas, não tenha medo de perguntar. Só hackeamos os outros nas horas vagas...\n\nPara ter acesso ao resto do servidor, preciso que você use o comando \`/validar\` e envie um texto dizendo o porquê você entrou aqui (ex: "Sou da turma X de Y da UFSCar e me interessei em conhecer o HackoonSpace..."). É para evitar a entrada de bots e pessoas mal-intencionadas\n\nQualquer problema, só chamar a equipe aqui do Hackoon!`)
             .catch(error => errorHandler.logGenericError(bot, error));
     else
@@ -89,7 +104,7 @@ bot.on('guildMemberAdd', async member => {
 bot.on('guildMemberRemove', member => {
     const channel = bot.channels.cache.get(logChannel);
 
-    if(channel)
+    if (channel)
         channel.send(`<@${member.id}> - ${member.user.username} saiu do servidor do HackoonSpace`).catch(error => errorHandler.logGenericError(bot, error));
     else
         console.log('Não foi possível encontrar canal de log');

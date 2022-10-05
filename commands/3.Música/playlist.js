@@ -6,10 +6,10 @@ const { embedColor } = require('../../config.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('tocar')
-        .setDescription('Toque uma música no servidor')
-        .addStringOption(option => option.setName('musica')
-            .setDescription('URL ou nome da música')
+        .setName('playlist')
+        .setDescription('Adicione uma playlist para tocar na fila')
+        .addStringOption(option => option.setName('playlist')
+            .setDescription('URL da playlist')
             .setRequired(true)
         ),
     display: true,
@@ -17,7 +17,7 @@ module.exports = {
         const guildQueue = bot.player.getQueue(inter.guild.id);
         const queue = bot.player.createQueue(inter.guild.id);
 
-        await inter.deferReply({ content: 'Processando música', ephemeral: true });
+        await inter.deferReply({ content: 'Processando playlist', ephemeral: true });
 
         try {
             await queue.join(inter.member.voice.channel);
@@ -27,17 +27,17 @@ module.exports = {
             });
 
             const music = args[0].value;
-            const song = await queue.play(music);
+            const playlist = await queue.playlist(music);
 
-            if (!song)
-                return inter.editReply({ content: 'Nenhuma música ou vídeo encontrado. Tente novamente', ephemeral: true });
+            if (!playlist)
+                return inter.editReply({ content: 'Nenhuma playlist encontrada. Tente novamente', ephemeral: true });
 
             const embed = new MessageEmbed()
                 .setColor(embedColor)
-                .setTitle('Música adicionada à fila')
-                .setDescription(`[${song.name}](${song.url}) - por **${song.author}**`);
+                .setTitle('Playlist adicionada à fila')
+                .setDescription(`Começando agora a playlist [${playlist.name}](${playlist.url}) - por **${playlist.author}**`);
 
-            inter.editReply({ content: 'Música processada', ephemeral: true });
+            inter.editReply({ content: 'Playlist processada', ephemeral: true });
             inter.channel.send({ embeds: [embed]});
         } catch (error) {
             console.log(error);

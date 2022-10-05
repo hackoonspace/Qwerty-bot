@@ -5,7 +5,8 @@ function logInteractionError(bot, inter, error) {
     console.log(error);
     
     const channel = bot.channels.cache.get(logChannel);
-    if(channel) {
+
+    if (channel) {
         const embed = new MessageEmbed()
         .setTitle(`Erro encontrado no comando /${inter.commandName}`)
         .setAuthor({ name: 'Qwerty', iconURL: bot.user.displayAvatarURL() })
@@ -19,7 +20,8 @@ function logGenericError(bot, error) {
     console.log(error);
 
     const channel = bot.channels.cache.get(logChannel);
-    if(channel) {
+
+    if (channel) {
         const embed = new MessageEmbed()
         .setTitle('Erro encontrado')
         .setAuthor({ name: 'Qwerty', iconURL: bot.user.displayAvatarURL() })
