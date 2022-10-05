@@ -11,11 +11,14 @@
   "license": "ISC",
   "dependencies": {
     "@discordjs/builders": "^0.15.0",
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/rest": "^0.5.0",
     "@discordjs/voice": "^0.10.0",
     "discord-api-types": "^0.36.1",
+    "discord-music-player": "^9.1.1",
     "discord.js": "^13.1.0",
     "dotenv": "^16.0.1",
+    "isomorphic-unfetch": "^3.1.0",
     "node-schedule": "^2.1.0"
   }
 }

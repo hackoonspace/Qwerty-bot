@@ -4,6 +4,8 @@ require('dotenv').config();
 
 const { readdirSync } = require('fs');
 const Discord = require('discord.js');
+const { Player } = require("discord-music-player");
+
 const { logChannel, mainGuild, reactRoles, roleGivingMessage, welcomeChannel } = require('./config.json');
 const notification = require('./system/notification.js');
 const errorHandler = require('./system/errorHandler.js');
@@ -29,6 +31,12 @@ const bot = new Discord.Client({
         'REACTION'
     ]
 });
+
+const player = new Player(bot, {
+    leaveOnEmpty: false,
+});
+
+bot.player = player;
 
 require('./system/commandRegister.js').execute(bot);
 
