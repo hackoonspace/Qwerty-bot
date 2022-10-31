@@ -20,7 +20,8 @@ module.exports = {
 		.addField("Edições da nossa revista", "[Link](https://hackoonspace.com/projetos.html) - Leia as edições da nossa revista técnica com artigos e projetos feitos por nossos membros")
 		.addField("Encontros passados", "[Link](https://discord.com/channels/492748426270998529/828691067531952178/828693384087732242) - Assista às gravações de encontros passados realizados na nossa atividade de extensão")
 		.addField("Guia de como fazer artigos/projetos", "[Link](https://drive.google.com/file/d/1XgK7N1jNAQZlCngcnfFFAqebvVYOwgJT/view?usp=sharing) - Saiba mais detalhes sobre como fazer e apresentar artigos e projetos no Hackoon")
-		.addField("Redes sociais", "[Link](https://linktr.ee/hackoonspace) - Acesse nossas redes sociais e outros links interessantes sobre o Hackoon");
+		.addField("Redes sociais", "[Link](https://linktr.ee/hackoonspace) - Acesse nossas redes sociais e outros links interessantes sobre o Hackoon")
+		.addField("HackaSalves", "[Link](https://www.youtube.com/playlist?list=PLSYx7h5HkQPpH5RS7QxSxCo3a3Yx6Vy0g) - Salves que recebemos mundo afora");
 
 		inter.reply({embeds: [embed]});
 	},
