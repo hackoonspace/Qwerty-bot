@@ -36,7 +36,7 @@ function createEmbedHelp(inter){
 
 	const directories = readdirSync(`./commands/`);
 	for(const dir of directories){
-		if(dir === "3.Moderação" && inter.guildId != moderationGuild)
+		if(dir.includes("Moderação") && inter.guildId != moderationGuild)
 			continue;
 		
 		const commandFiles = readdirSync(`./commands/${dir}`).filter(file => file.endsWith('.js'));
