@@ -79,6 +79,47 @@ function getEventNotificationHour(minute, hour) {
     return `${minute} ${hour}`;
 }
 
+async function createEventNotifications (event) {
+    const eventDate = new Date(event.scheduledStartTimestamp);
+    const day = eventDate.getDate();
+    const month = eventDate.getMonth() + 1;
+    const hour = eventDate.getHours();
+    const minute = eventDate.getMinutes();
+
+    console.log(`Evento marcado: ${event.name} ->> ${hour}:${minute} do dia ${day}/${month}`); 
+
+    //evento 8 da manhã
+    schedule.scheduleJob(`00 08 ${day} ${month} *`, async () => {
+        const subscribers = await event.fetchSubscribers();
+        console.log('Começando a enviar notificações às 8h');
+        subscribers.forEach(subscriber => {
+            if(subscriber.user.bot) return;
+            try {
+                subscriber.user.send(`Hoje você terá o evento **${event.name}** que irá começar **${hour}:${String(minute).padStart(2, '0')}**. Não se esqueça de comparecer!\n\nMais detalhes em: ${event.url}`);
+            } catch (error) {
+                console.log("Não foi possível enviar notificação para usuário");
+                logGenericError(bot, error);
+            }
+        });
+    });
+
+    // evento 15 min antes
+    schedule.scheduleJob(`${getEventNotificationHour(minute, hour)} ${day} ${month}  *`, async () => {
+        const subscribers = await event.fetchSubscribers();
+        console.log('Começando a enviar notificações 15 min antes');
+        console.log(subscribers);
+        subscribers.forEach(subscriber => {
+            if(subscriber.user.bot) return;
+            try {
+                subscriber.user.send(`O evento **${event.name}** irá começar em 15 minutos. Não se esqueça de comparecer!\n\nMais detalhes em: ${event.url}`);
+            } catch (e) {
+                console.log("Não foi possível enviar notificação para usuário");
+                logGenericError(bot, error);
+            }
+        });
+    });
+}
+
 async function eventNotifications (bot) {
     const guilds = await bot.guilds.fetch();
         
@@ -87,48 +128,12 @@ async function eventNotifications (bot) {
         const events = await guild.scheduledEvents.fetch();
             
         events.forEach(async event => {
-            const eventDate = new Date(event.scheduledStartTimestamp);
-            const day = eventDate.getDate();
-            const month = eventDate.getMonth() + 1;
-            const hour = eventDate.getHours();
-            const minute = eventDate.getMinutes();
-
-            console.log(`Evento marcado: ${event.name} ->> ${hour}:${minute} do dia ${day}/${month}`); 
-
-            //evento 8 da manhã
-            schedule.scheduleJob(`00 08 ${day} ${month} *`, async () => {
-                const subscribers = await event.fetchSubscribers();
-                console.log('Começando a enviar notificações às 8h');
-                subscribers.forEach(subscriber => {
-                    if(subscriber.user.bot) return;
-                    try {
-                        subscriber.user.send(`Hoje você terá o evento **${event.name}** que irá começar **${hour}:${String(minute).padStart(2, '0')}**. Não se esqueça de comparecer!\n\nMais detalhes em: ${event.url}`);
-                    } catch (error) {
-                        console.log("Não foi possível enviar notificação para usuário");
-                        logGenericError(bot, error);
-                    }
-                });
-            });
-
-            // evento 15 min antes
-            schedule.scheduleJob(`${getEventNotificationHour(minute, hour)} ${day} ${month}  *`, async () => {
-                const subscribers = await event.fetchSubscribers();
-                console.log('Começando a enviar notificações 15 min antes');
-                console.log(subscribers);
-                subscribers.forEach(subscriber => {
-                    if(subscriber.user.bot) return;
-                    try {
-                        subscriber.user.send(`O evento **${event.name}** irá começar em 15 minutos. Não se esqueça de comparecer!\n\nMais detalhes em: ${event.url}`);
-                    } catch (e) {
-                        console.log("Não foi possível enviar notificação para usuário");
-                        logGenericError(bot, error);
-                    }
-                });
-            });
+            createEventNotifications(event);
         });
     });
 }
 module.exports = {
     meetingNotifications,
     eventNotifications,
+    createEventNotifications,
 }
