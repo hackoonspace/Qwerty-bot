@@ -130,6 +130,10 @@ bot.on('messageReactionRemove', async (reaction, user) => {
     }
 })
 
+bot.on('guildScheduledEventCreate', (event) => {
+	notification.createNotificationsForEvent(event);
+});
+
 bot.on('interactionCreate', async inter => {
     if (inter.isModalSubmit()) {
         try {
