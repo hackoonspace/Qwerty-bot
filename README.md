@@ -20,6 +20,7 @@ Para quem deseja executar este projeto em sua própria máquina, é necessário:
 
 Além disso é importante:
 - Ter um token próprio para bot de Discord, vindo do próprio dashboard da plataforma (usado na variável de ambiente `BOT_TOKEN`)
+- A variável de ambiente `TZ` serve para selecionar o timezone que será utilizado pelo Node.js
 - Mudar os valores do arquivo `config.json` para atender aos canais, servidores e mensagens correspondentes ao seu caso de uso
 
 ## Desenvolvedores
