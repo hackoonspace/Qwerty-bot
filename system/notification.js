@@ -107,7 +107,6 @@ async function createEventNotifications (event) {
     schedule.scheduleJob(`${getEventNotificationHour(minute, hour)} ${day} ${month}  *`, async () => {
         const subscribers = await event.fetchSubscribers();
         console.log('Começando a enviar notificações 15 min antes');
-        console.log(subscribers);
         subscribers.forEach(subscriber => {
             if(subscriber.user.bot) return;
             try {
