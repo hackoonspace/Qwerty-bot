@@ -105,7 +105,7 @@ bot.on('guildMemberRemove', member => {
     const channel = bot.channels.cache.get(logChannel);
 
     if (channel)
-        channel.send(`<@${member.id}> - ${member.user.username} saiu do servidor do HackoonSpace`).catch(error => errorHandler.logGenericError(bot, error));
+        channel.send(`<@${member.id}> - **${member.user.username}** saiu do servidor do **${member.guild.name}**`).catch(error => errorHandler.logGenericError(bot, error));
     else
         console.log('Não foi possível encontrar canal de log');
 })
