@@ -1,6 +1,6 @@
 "use strict";
 
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { calendarChannel, embedColor } = require('../../config.json');
 
@@ -9,8 +9,8 @@ const calendarDates = [];
 function addEvents(embed){
     const fieldLength = calendarDates.length > 25 ? 25 : calendarDates.length;
 
-    for(let i = 0; i < fieldLength; i++)
-        embed.addField(calendarDates[i].date, `\`\`\`yaml\n${calendarDates[i].description}\n\`\`\``);
+    for (let i = 0; i < fieldLength; i++)
+        embed.addFields({ name: calendarDates[i].date, value: `\`\`\`yaml\n${calendarDates[i].description}\n\`\`\`` });
 
     return embed;
 }
@@ -18,7 +18,7 @@ function addEvents(embed){
 async function getCalendarDates(bot) {
     const channel = await bot.channels.fetch(calendarChannel);
 
-    if(!channel)
+    if (!channel)
         throw new Error("Canal de calendário da equipe do Hackoon não encontrado");
 
     const messages = await channel.messages.fetch();
@@ -49,7 +49,7 @@ module.exports = {
         if(!calendarDates.length)
             return inter.reply({ content: 'Nenhuma data importante foi adicionada ao calendário por enquanto'});
 
-        const embedResponse = new MessageEmbed()
+        const embedResponse = new EmbedBuilder()
         .setColor(embedColor)
         .setTitle('Próximas datas importantes:');
 

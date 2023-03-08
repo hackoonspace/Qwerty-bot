@@ -1,6 +1,6 @@
 "use strict";
 
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { embedColor } = require('../../config.json');
 
@@ -15,7 +15,7 @@ module.exports = {
         if (!guildQueue || !guildQueue.songs || !guildQueue.songs.length)
             return inter.reply({ content: 'Não há nenhuma fila de músicas ativa', ephemeral: true });
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(embedColor)
             .setTitle('Fila de músicas atual')
             .setFooter({ text: 'Mostrando as 20 primeiras músicas da lista' });

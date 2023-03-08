@@ -1,4 +1,4 @@
-const { MessageEmbed}  = require('discord.js');
+const { EmbedBuilder}  = require('discord.js');
 const { logChannel } = require('../config.json');
 
 function logInteractionError(bot, inter, error) {
@@ -7,7 +7,7 @@ function logInteractionError(bot, inter, error) {
     const channel = bot.channels.cache.get(logChannel);
 
     if (channel) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setTitle(`Erro encontrado no comando /${inter.commandName}`)
         .setAuthor({ name: 'Qwerty', iconURL: bot.user.displayAvatarURL() })
         .setDescription(error.message);
@@ -22,7 +22,7 @@ function logGenericError(bot, error) {
     const channel = bot.channels.cache.get(logChannel);
 
     if (channel) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setTitle('Erro encontrado')
         .setAuthor({ name: 'Qwerty', iconURL: bot.user.displayAvatarURL() })
         .setDescription(error.message);

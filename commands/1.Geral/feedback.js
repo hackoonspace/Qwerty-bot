@@ -1,7 +1,7 @@
 "use strict";
 
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { embedColor, moderationChannel } = require('../../config.json');
 
 module.exports = {
@@ -22,7 +22,7 @@ module.exports = {
         const feedbackMessage = args[0].value;
 
         return bot.channels.fetch(moderationChannel).then(channel => {
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
             .setColor(embedColor)
             .setTitle('Feedback anônimo recebido')
             .setDescription(feedbackMessage)

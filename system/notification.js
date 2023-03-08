@@ -20,8 +20,11 @@ async function meetingNotifications (bot) {
             const embed = message.embeds[0];
             
             const title = embed.title;
-            const date = embed.fields.find(field => field.name === 'Data').value;
-            const time = embed.fields.find(field => field.name === 'Horário').value;
+            const date = embed.fields.find(field => field.name === 'Data')?.value;
+            const time = embed.fields.find(field => field.name === 'Horário')?.value;
+
+            if (!date || !time)
+                return;
 
             const formatedDate = date.split('/');
             const formatedTime = time.split(':');
@@ -29,12 +32,12 @@ async function meetingNotifications (bot) {
             let subMinutes = Number(formatedTime[1].substring(0, 2));
             let subHours = Number(formatedTime[0].substring(0, 2));
 
-            if(Number.isNaN(subMinutes) || Number.isNaN(subHours)) 
+            if (Number.isNaN(subMinutes) || Number.isNaN(subHours)) 
                 return;
 
             subMinutes -= 15;
 
-            if(subMinutes < 0){
+            if (subMinutes < 0) {
                 subMinutes += 60;
                 subHours = (subHours - 1) < 0 ? 23 : subHours - 1;
             }

@@ -1,6 +1,6 @@
 "use strict";
 
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { embedColor } = require('../../config.json');
 
@@ -32,7 +32,7 @@ module.exports = {
             if (!song)
                 return inter.editReply({ content: 'Nenhuma música ou vídeo encontrado. Tente novamente', ephemeral: true });
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setColor(embedColor)
                 .setTitle('Música adicionada à fila')
                 .setDescription(`[${song.name}](${song.url}) - por **${song.author}**`);

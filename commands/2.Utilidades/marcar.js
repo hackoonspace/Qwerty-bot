@@ -1,6 +1,6 @@
 "use strict";
 
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { embedColor, moderationChannel } = require('../../config.json');
 
@@ -22,7 +22,7 @@ module.exports = {
         const eventDetailsMessage = args[0].value;
 
         return bot.channels.fetch(moderationChannel).then(channel => {
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
             .setColor(embedColor)
             .setTitle(`Evento a ser marcado - ${inter.user.username} - ${inter.user.id}`)
             .setDescription(eventDetailsMessage)

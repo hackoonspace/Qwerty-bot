@@ -1,7 +1,7 @@
 "use strict";
 
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { embedColor } = require('../../config.json');
 
 module.exports = {
@@ -11,10 +11,10 @@ module.exports = {
 	display: true,
 	cooldown: 300,
 	execute(bot, inter, args) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setColor(embedColor)
         .setTitle('Novidades - bot do Qwerty')
-        .addField('Minha criação', 'Meu bot finalmente está online! Espero poder ajudar vocês o máximo que eu puder', true);
+        .addFields({ name: 'Minha criação', value: 'Meu bot finalmente está online! Espero poder ajudar vocês o máximo que eu puder', inline: true });
 
 		inter.reply({ embeds: [ embed ] });
 	},

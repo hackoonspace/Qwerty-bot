@@ -3,32 +3,32 @@
 require('dotenv').config();
 
 const { readdirSync } = require('fs');
-const Discord = require('discord.js');
+const { AttachmentBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Client, Collection, Events, IntentsBitField, EmbedBuilder, Partials } = require('discord.js');
 const { Player } = require("discord-music-player");
 
 const { embedColor, logChannel, mainGuild, reactRoles, roleGivingMessage, welcomeChannel } = require('./config.json');
 const notification = require('./system/notification.js');
 const errorHandler = require('./system/errorHandler.js');
 
-const Intents = Discord.Intents.FLAGS;
+const Intents = IntentsBitField.Flags;
 
-const bot = new Discord.Client({
+const bot = new Client({
     intents: [
-        Intents.GUILDS,
-        Intents.GUILD_MEMBERS,
-        Intents.GUILD_EMOJIS_AND_STICKERS,
-        Intents.GUILD_VOICE_STATES,
-        Intents.GUILD_PRESENCES,
-        Intents.GUILD_MESSAGES,
-        Intents.GUILD_MESSAGE_REACTIONS,
-        Intents.DIRECT_MESSAGES,
-        Intents.DIRECT_MESSAGE_REACTIONS,
-        Intents.GUILD_SCHEDULED_EVENTS
+        Intents.Guilds,
+        Intents.GuildMembers,
+        Intents.GuildEmojisAndStickers,
+        Intents.GuildVoiceStates,
+        Intents.GuildPresences,
+        Intents.GuildMessages,
+        Intents.GuildMessageReactions,
+        Intents.DirectMessages,
+        Intents.DirectMessageReactions,
+        Intents.GuildScheduledEvents,
     ],
     partials: [
-        'CHANNEL',
-        'MESSAGE',
-        'REACTION'
+        Partials.Channel,
+        Partials.Message,
+        Partials.Reaction,
     ]
 });
 
@@ -44,7 +44,7 @@ bot.player.on('songChanged', (queue, newSong, oldSong) => {
     const channel = bot.channels.cache.find(channel => channel.id === queue.data.channelId);
 
     if (channel) {
-        const embed = new Discord.MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(embedColor)
             .setTitle('Tocando agora')
             .setDescription(`[${newSong.name}](${newSong.url}) - por **${newSong.author}**`);
@@ -55,7 +55,7 @@ bot.player.on('songChanged', (queue, newSong, oldSong) => {
 
 require('./system/commandRegister.js').execute(bot);
 
-bot.commands = new Discord.Collection();
+bot.commands = new Collection();
 
 const commandDirectories = readdirSync(`./commands/`);
 for (const dir of commandDirectories){
@@ -67,7 +67,7 @@ for (const dir of commandDirectories){
     }
 }
 
-bot.once('ready', async () => {
+bot.once(Events.ClientReady, async () => {
 	bot.user.setActivity('CTF', { type: 'COMPETING' });
 
     try {
@@ -80,7 +80,7 @@ bot.once('ready', async () => {
 	console.log('Bot do Qwerty online');
 });
 
-bot.on('guildMemberAdd', async member => {
+bot.on(Events.GuildMemberAdd, async member => {
     if (member.guild.id !== mainGuild) return;
 
     if (member.user.bot) { 
@@ -94,23 +94,43 @@ bot.on('guildMemberAdd', async member => {
         
     const channel = member.guild.channels.cache.get(welcomeChannel);
 
-    if (channel)
-	    channel.send(`Olá <@${member.id}>. Sou o Qwerty e te dou boas-vindas ao **HackoonSpace**!\n\nSe tiver dúvidas, não tenha medo de perguntar. Só hackeamos os outros nas horas vagas...\n\nPara ter acesso ao resto do servidor, preciso que você use o comando \`/validar\` e envie um texto dizendo o porquê você entrou aqui (ex: "Sou da turma X de Y da UFSCar e me interessei em conhecer o HackoonSpace..."). É para evitar a entrada de bots e pessoas mal-intencionadas\n\nQualquer problema, só chamar a equipe aqui do Hackoon!`)
-            .catch(error => errorHandler.logGenericError(bot, error));
-    else
-        console.log('Não foi possível encontrar canal de boas-vindas');
+    if (channel) {
+        const file = new AttachmentBuilder('./images/qwerty_face.png');
+
+        const embed = new EmbedBuilder()
+            .setTitle('Boas-vindas ao HackoonSpace!')
+            .setDescription(`Olá <@${member.id}>. Sou o Qwerty e te dou boas-vindas ao **HackoonSpace**!\n\nSe tiver dúvidas, não tenha medo de perguntar. Só hackeamos os outros nas horas vagas...\n\nPara ter acesso ao resto do servidor, clique no botão \`Validar acesso\` nesta mensagem ou use o comando \`/validar\`\n\nQualquer problema, só chamar a equipe aqui do Hackoon!`)
+            .setThumbnail('attachment://qwerty_face.png')
+
+		const row = new ActionRowBuilder()
+			.addComponents(
+				new ButtonBuilder()
+					.setCustomId('validar|button')
+					.setLabel('Validar acesso')
+					.setStyle(ButtonStyle.Primary),
+			);
+        return channel.send({
+            content: `<@${member.id}>`,
+            components: [row],
+            embeds: [embed],
+            files: [file]
+        })
+        .catch(error => errorHandler.logGenericError(bot, error));
+    }
+
+    console.log('Não foi possível encontrar canal de boas-vindas');
 });
 
-bot.on('guildMemberRemove', member => {
+bot.on(Events.GuildMemberRemove, member => {
     const channel = bot.channels.cache.get(logChannel);
 
     if (channel)
         channel.send(`<@${member.id}> - **${member.user.username}** saiu do servidor do **${member.guild.name}**`).catch(error => errorHandler.logGenericError(bot, error));
-    else
-        console.log('Não foi possível encontrar canal de log');
+
+    console.log('Não foi possível encontrar canal de log');
 })
 
-bot.on('messageReactionAdd', async (reaction, user) => {
+bot.on(Events.MessageReactionAdd, async (reaction, user) => {
     if (reaction.message.id === roleGivingMessage) {
         const newRole = reactRoles.find(newRole => newRole.reaction == reaction.emoji.name);
         if (newRole) {
@@ -120,7 +140,7 @@ bot.on('messageReactionAdd', async (reaction, user) => {
     }
 })
 
-bot.on('messageReactionRemove', async (reaction, user) => {
+bot.on(Events.MessageReactionRemove, async (reaction, user) => {
     if (reaction.message.id === roleGivingMessage) {
         const newRole = reactRoles.find(newRole => newRole.reaction == reaction.emoji.name);
         if (newRole) {
@@ -130,17 +150,31 @@ bot.on('messageReactionRemove', async (reaction, user) => {
     }
 })
 
-bot.on('guildScheduledEventCreate', (event) => {
+bot.on(Events.GuildScheduledEventCreate, event => {
 	notification.createNotificationsForEvent(event);
 });
 
-bot.on('interactionCreate', async inter => {
+bot.on(Events.InteractionCreate, async inter => {
+    if (inter.isButton()) {
+        try {
+            const commandName = inter.customId.substring(0, inter.customId.indexOf("|"));
+            const command = bot.interactions.get(commandName) || bot.commands.get(commandName);
+            
+            if (!command) return;
+    
+            return command.buttonCollector(bot, inter);
+        } catch (error) {
+            errorHandler.logInteractionError(bot, inter, error);
+            return inter.reply({ content: 'Ocorreu algum problema ao usar o comando!', ephemeral: true });
+        }
+    }
+
     if (inter.isModalSubmit()) {
         try {
             const commandName = inter.customId.substring(0, inter.customId.indexOf("|"));
             const command = bot.interactions.get(commandName) || bot.commands.get(commandName);
             
-            if(!command) return;
+            if (!command) return;
     
             return command.modalCollector(bot, inter);
         } catch (error) {

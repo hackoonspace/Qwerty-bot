@@ -1,6 +1,6 @@
 "use strict";
 
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { embedColor } = require('../../config.json');
 
@@ -32,7 +32,7 @@ module.exports = {
             if (!playlist)
                 return inter.editReply({ content: 'Nenhuma playlist encontrada. Tente novamente', ephemeral: true });
 
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
                 .setColor(embedColor)
                 .setTitle('Playlist adicionada à fila')
                 .setDescription(`Começando agora a playlist [${playlist.name}](${playlist.url}) - por **${playlist.author}**`);

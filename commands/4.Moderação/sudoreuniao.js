@@ -1,6 +1,6 @@
 "use strict";
 
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { embedColor, meetingScheduleChannel } = require('../../config.json');
 
@@ -8,12 +8,14 @@ async function sendScheduleMeeting(bot, date, time, theme, group, observation) {
     const channel = bot.channels.cache.get(meetingScheduleChannel);
 
     if(channel) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setColor(embedColor)
         .setTitle(`Reunião: ${theme}`)
-        .addField('Data', date, true)
-        .addField('Horário', time, true)
-        .addField('Grupo', `<@&${group}>`);
+        .addFields([
+            { name: 'Data', value: date, inline: true },
+            { name: 'Horário', value: time, inline: true },
+            { name: 'Grupo', value: `<@&${group}>`},
+        ]);
 
         if(observation) 
             embed.setDescription(observation);

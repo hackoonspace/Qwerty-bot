@@ -1,6 +1,6 @@
 "use strict";
 
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { embedColor, reactRoles, roleGivingChannel } = require('../../config.json');
 
@@ -14,7 +14,7 @@ module.exports = {
         const channel = bot.channels.cache.get(roleGivingChannel);
 
         if(channel) {
-            const embed = new MessageEmbed()
+            const embed = new EmbedBuilder()
             .setTitle('Reaja esta mensagem com o emoji correspondente para receber um cargo')
             .setColor(embedColor);
 

@@ -1,6 +1,6 @@
 "use strict";
 
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { calendarChannel, embedColor } = require('../../config.json');
 
@@ -9,11 +9,13 @@ async function sendCalendarDate(bot, date, description) {
     const channel = bot.channels.cache.get(calendarChannel);
 
     if(channel) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
         .setColor(embedColor)
         .setTitle('Sistema de calendário do Hackoon')
-        .addField('Data', date)
-        .addField('Descrição', description);
+        .addFields([
+            { name: 'Data', value: date },
+            { name:'Descrição', value: description }
+        ]);
 
         channel.send({ embeds: [embed] });
         return true;

@@ -1,6 +1,6 @@
 "use strict";
 
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { embedColor } = require('../../config.json');
 
@@ -17,7 +17,7 @@ module.exports = {
 
         const song = guildQueue.nowPlaying;
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(embedColor)
             .setTitle('Tocando agora')
             .setDescription(`[${song.name}](${song.url}) - por **${song.author}**`);
