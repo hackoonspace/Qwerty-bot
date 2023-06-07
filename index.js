@@ -58,7 +58,7 @@ require('./system/commandRegister.js').execute(bot);
 bot.commands = new Collection();
 
 const commandDirectories = readdirSync(`./commands/`);
-for (const dir of commandDirectories){
+for (const dir of commandDirectories) {
     const commandFiles = readdirSync(`./commands/${dir}`).filter(file => file.endsWith('.js') || file.endsWith('.ts'));
     for (const file of commandFiles) {
         const command = require(`./commands/${dir}/${file}`);
@@ -68,7 +68,7 @@ for (const dir of commandDirectories){
 }
 
 bot.once(Events.ClientReady, async () => {
-	bot.user.setActivity('CTF', { type: 'COMPETING' });
+    bot.user.setActivity('CTF', { type: 'COMPETING' });
 
     try {
         notification.meetingNotifications(bot);
@@ -77,21 +77,21 @@ bot.once(Events.ClientReady, async () => {
         errorHandler.logGenericError(bot, error);
     }
 
-	console.log('Bot do Qwerty online');
+    console.log('Bot do Qwerty online');
 });
 
 bot.on(Events.GuildMemberAdd, async member => {
     if (member.guild.id !== mainGuild) return;
 
-    if (member.user.bot) { 
+    if (member.user.bot) {
         const botRole = member.guild.roles.cache.find(role => role.name === "Bots");
 
         if (botRole)
             member.roles.add(botRole);
-        
+
         return;
     }
-        
+
     const channel = member.guild.channels.cache.get(welcomeChannel);
 
     if (channel) {
@@ -99,23 +99,16 @@ bot.on(Events.GuildMemberAdd, async member => {
 
         const embed = new EmbedBuilder()
             .setTitle('Boas-vindas ao HackoonSpace!')
-            .setDescription(`Olá <@${member.id}>. Sou o Qwerty e te dou boas-vindas ao **HackoonSpace**!\n\nSe tiver dúvidas, não tenha medo de perguntar. Só hackeamos os outros nas horas vagas...\n\nPara ter acesso ao resto do servidor, clique no botão \`Validar acesso\` nesta mensagem ou use o comando \`/validar\`\n\nQualquer problema, só chamar a equipe aqui do Hackoon!`)
+            .setDescription(`Olá <@${member.id}>. Sou o Qwerty e te dou boas-vindas ao **HackoonSpace**!\n\nSe tiver dúvidas, não tenha medo de perguntar. Só hackeamos os outros nas horas vagas...\n\nPara ter acesso ao resto do servidor e receber outros cargos, verifique a aba \`Canais & Cargos\` do Discord\n\nQualquer problema, só chamar a equipe aqui do Hackoon!`)
             .setThumbnail('attachment://qwerty_face.png')
 
-		const row = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId('validar|button')
-					.setLabel('Validar acesso')
-					.setStyle(ButtonStyle.Primary),
-			);
         return channel.send({
             content: `<@${member.id}>`,
             components: [row],
             embeds: [embed],
             files: [file]
         })
-        .catch(error => errorHandler.logGenericError(bot, error));
+            .catch(error => errorHandler.logGenericError(bot, error));
     }
 
     console.log('Não foi possível encontrar canal de boas-vindas');
@@ -151,7 +144,7 @@ bot.on(Events.MessageReactionRemove, async (reaction, user) => {
 })
 
 bot.on(Events.GuildScheduledEventCreate, event => {
-	notification.createNotificationsForEvent(event);
+    notification.createNotificationsForEvent(event);
 });
 
 bot.on(Events.InteractionCreate, async inter => {
@@ -159,9 +152,9 @@ bot.on(Events.InteractionCreate, async inter => {
         try {
             const commandName = inter.customId.substring(0, inter.customId.indexOf("|"));
             const command = bot.interactions.get(commandName) || bot.commands.get(commandName);
-            
+
             if (!command) return;
-    
+
             return command.buttonCollector(bot, inter);
         } catch (error) {
             errorHandler.logInteractionError(bot, inter, error);
@@ -173,9 +166,9 @@ bot.on(Events.InteractionCreate, async inter => {
         try {
             const commandName = inter.customId.substring(0, inter.customId.indexOf("|"));
             const command = bot.interactions.get(commandName) || bot.commands.get(commandName);
-            
+
             if (!command) return;
-    
+
             return command.modalCollector(bot, inter);
         } catch (error) {
             errorHandler.logInteractionError(bot, inter, error);
